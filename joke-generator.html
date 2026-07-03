@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Joke Generator</title>
+    <link rel="stylesheet" href="joke-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="joke-card">
+            <div class="header">
+                <h1><i class="fas fa-laugh-beam"></i> Joke Generator</h1>
+                <p class="subtitle">Get a random laugh!</p>
+            </div>
+
+            <div class="joke-content">
+                <div class="joke-display" id="jokeDisplay">
+                    <p class="loading">Loading a joke for you...</p>
+                </div>
+
+                <div class="joke-type-badge" id="jokeType">
+                    <!-- Type badge will appear here -->
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="newJokeBtn">
+                    <i class="fas fa-dice"></i> New Joke
+                </button>
+                <button class="btn btn-secondary" id="copyBtn">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+                <button class="btn btn-secondary" id="shareBtn">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+
+            <div class="joke-history">
+                <h3>Recent Jokes</h3>
+                <ul id="jokeHistory">
+                    <li class="placeholder">No jokes saved yet</li>
+                </ul>
+            </div>
+
+            <div class="filters">
+                <h3>Filter by Category</h3>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-category="any">Any</button>
+                    <button class="filter-btn" data-category="general">General</button>
+                    <button class="filter-btn" data-category="programming">Programming</button>
+                    <button class="filter-btn" data-category="knock-knock">Knock-Knock</button>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="jokeCount">0</span>
+                    <span class="stat-label">Jokes Loaded</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" id="favoriteCount">0</span>
+                    <span class="stat-label">Favorites</span>
+                </div>
+            </div>
+
+            <footer>
+                <p>Powered by <a href="https://sv443.net/jokeapi/v2/" target="_blank">JokeAPI</a> | <a href="index.html">Back to Portfolio</a></p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script src="joke-script.js"></script>
+</body>
+</html>
