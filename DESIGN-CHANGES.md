@@ -71,8 +71,22 @@ This means each step highlights in its own theme color (blue for Law college, gr
 
 ---
 
+## 7. Home Section — Updated Portrait Photo
+
+**Old:** Default portrait was `uploads/portrait.png` (placeholder).
+
+**New:** Replaced with `uploads/portrait-deepshikha.jpg` — the actual photo of Deepshikha.
+
+**Additional fix:** Removed the localStorage override (`dr_portrait` key) that was caching the old deleted portrait path and preventing the new image from showing. The portrait now always loads from the default path.
+
+**Also:** Deleted the old `uploads/portrait.png` file.
+
+---
+
 ## Summary of files changed
 
-- `index.html` — all changes above (projects, email, styles)
+- `index.html` — all changes above (projects, email, styles, portrait)
+- `uploads/portrait-deepshikha.jpg` — new portrait photo (added)
+- `uploads/portrait.png` — old portrait placeholder (deleted)
 - `uploads/Spatial UI for a Car Booking Platfrom.jpeg` — project cover image (added)
 - `uploads/Fabrikaa-Fashion App Prototype with Gamified User Experience.jpeg` — project cover image (added)
