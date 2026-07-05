@@ -83,6 +83,15 @@ This means each step highlights in its own theme color (blue for Law college, gr
 
 ---
 
+## 8. Cleanup — Removed Unused Files
+
+Deleted files not used by the bundled portfolio:
+- `joke-generator.html` — separate joke generator page
+- `simple-styles.css` — old simplified stylesheet
+- `script.js` — old standalone script
+
+---
+
 ## Summary of files changed
 
 - `index.html` — all changes above (projects, email, styles, portrait)
