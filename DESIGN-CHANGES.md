@@ -111,6 +111,37 @@ Removed the 4 placeholder projects that were not real Behance work:
 
 ---
 
+## 11. Sketches Section — Reordered Categories
+
+**Old order:** Pencil portraits, Charcoal & shading, Ink & line art, Paintings, Modern & boho canvases, Rangoli & folk art, Craft & handwork
+
+**New order:**
+1. Paintings (moved to top)
+2. Modern & boho canvases (moved to second)
+3. Pencil portraits
+4. Charcoal & shading
+5. Ink & line art
+6. Rangoli & folk art
+7. Craft & handwork
+
+---
+
+## 12. Sketches — Renamed All Files by Category
+
+All 77 sketch files renamed from random camera names (IMG_20200..., PXL_2026..., etc.) to sequential category-based names:
+
+- `paintings_1.jpg` through `paintings_30.jpg` (30 files)
+- `modern_boho_1.jpg` through `modern_boho_10.jpg` (10 files)
+- `pencil_portraits_1.jpg` through `pencil_portraits_15.jpg` (15 files)
+- `charcoal_1.jpg` through `charcoal_9.jpg` (9 files)
+- `ink_lineart_1.jpg` through `ink_lineart_2.jpg` (2 files)
+- `rangoli_folkart_1.jpg` through `rangoli_folkart_6.jpg` (6 files)
+- `craft_1.jpg` through `craft_5.jpg` (5 files)
+
+The `ALL` array in the template was updated to match the new filenames.
+
+---
+
 ## Summary of files changed
 
 - `index.html` — all changes above (projects, email, styles, portrait, images)
