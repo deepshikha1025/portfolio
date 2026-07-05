@@ -142,6 +142,18 @@ The `ALL` array in the template was updated to match the new filenames.
 
 ---
 
+## 13. Loading Screen — Themed Loader
+
+**Old:** Plain full-screen SVG with "DR" box and small "Unpacking..." text in the corner.
+
+**New:** Centered animated loader matching the portfolio's warm, hand-drawn theme:
+- Floating "DR" logo badge (golden yellow with dark border, gentle float animation)
+- 5 animated dots in the portfolio's color palette (yellow, coral, purple, blue, green) that pulse in sequence
+- "LOADING PORTFOLIO" text in subtle uppercase
+- Cream background (#FCF8F0) matching the site theme
+
+---
+
 ## Summary of files changed
 
 - `index.html` — all changes above (projects, email, styles, portrait, images)
