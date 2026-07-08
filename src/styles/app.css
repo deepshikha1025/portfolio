@@ -1,0 +1,11 @@
+*{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{background:#FCF8F0;-webkit-font-smoothing:antialiased}
+  ::selection{background:#FFC53D80}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-12px) rotate(var(--r,0deg))}}
+  @keyframes wiggle{0%,100%{transform:rotate(var(--r,0deg))}25%{transform:rotate(calc(var(--r,0deg) + 4deg))}75%{transform:rotate(calc(var(--r,0deg) - 4deg))}}
+  @keyframes popin{0%{opacity:0;transform:translateY(14px) scale(.96)}100%{opacity:1;transform:none}}
+  @keyframes fadein{0%{opacity:0}100%{opacity:1}}
+  @keyframes dash{to{stroke-dashoffset:-1000}}
+  input,textarea,button{font-family:inherit}
+  textarea{resize:vertical}

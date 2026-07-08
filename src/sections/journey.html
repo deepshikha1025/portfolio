@@ -1,0 +1,70 @@
+<!-- ============ JOURNEY ============ -->
+    <sc-if value="{{ isJourney }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1120px;margin:0 auto;padding:clamp(26px,5vw,56px) clamp(18px,4vw,40px) clamp(50px,7vw,90px);animation:popin .4s ease both;">
+      <div style="font-family:'Caveat';font-size:clamp(20px,3vw,26px);color:#8B6DFF;transform:rotate(-1.5deg);">chapter by chapter →</div>
+      <h1 style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(38px,7vw,72px);margin:2px 0 6px;letter-spacing:-.5px;">My journey</h1>
+      <p style="font-family:'Nunito';font-weight:600;font-size:clamp(15px,1.8vw,19px);max-width:640px;opacity:.8;margin:0 0 14px;">Tap any panel in the storyboard to relive that moment — then read the whole thing below.</p>
+
+      <!-- storyboard strip -->
+      <div style="background:#fff;border:2.5px solid #201B13;border-radius:20px;box-shadow:6px 6px 0 #201B13;padding:clamp(16px,3vw,28px);margin-top:18px;">
+        <div style="font-family:'Shantell Sans';font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#201B13;opacity:.55;margin-bottom:14px;">The storyboard — 9 frames</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:14px;">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="9">
+            <div onclick="{{ s.onClick }}" style="position:relative;cursor:pointer;background:{{ s.bg }};border:2.5px solid #201B13;border-radius:14px;padding:14px 10px 12px;text-align:center;animation:popin .45s ease both;animation-delay:{{ s.delay }};transition:transform .14s ease;" style-hover="transform:translateY(-4px)">
+              <div style="position:absolute;top:-10px;left:-8px;z-index:1;width:26px;height:26px;background:#201B13;color:#FCF8F0;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Shantell Sans';font-weight:700;font-size:12px;">{{ s.n }}</div>
+              <div style="width:52px;height:52px;margin:2px auto 0;display:flex;align-items:center;justify-content:center;background:#fff;border:2.5px solid #201B13;border-radius:58% 42% 50% 50%/50% 55% 45% 50%;font-size:26px;color:{{ s.color }};">
+                <i class="{{ s.icon }}"></i>
+              </div>
+              <div style="font-family:'Shantell Sans';font-weight:600;font-size:13px;line-height:1.15;margin-top:8px;">{{ s.title }}</div>
+              <sc-if value="{{ s.active }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;inset:-4px;border:2.5px solid {{ s.color }};border-radius:16px;pointer-events:none;box-shadow:0 0 14px {{ s.glow }}, 0 4px 18px rgba(0,0,0,0.08);background:{{ s.tint }};"></div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- active frame detail -->
+        <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-top:24px;padding-top:22px;border-top:2.5px dashed rgba(32,27,19,0.2);">
+          <div style="flex:0 0 auto;width:96px;height:96px;display:flex;align-items:center;justify-content:center;background:{{ activeColor }};border:3px solid #201B13;border-radius:60% 40% 55% 45%/50% 55% 45% 50%;font-size:44px;color:#fff;box-shadow:4px 4px 0 #201B13;">
+            <i class="{{ activeIcon }}"></i>
+          </div>
+          <div style="flex:1 1 320px;">
+            <div style="font-family:'Caveat';font-size:22px;color:#FF6F61;">frame {{ activeN }}</div>
+            <div style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(22px,3vw,30px);line-height:1.1;">{{ activeTitle }}</div>
+            <p style="font-family:'Nunito';font-weight:600;font-size:clamp(15px,1.8vw,18px);line-height:1.55;margin:8px 0 0;">{{ activeBody }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- written story -->
+      <div style="position:relative;margin-top:clamp(34px,5vw,56px);">
+        <sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;top:40px;right:-6px;font-family:'Caveat';font-size:22px;color:#8B6DFF;transform:rotate(6deg);z-index:2;max-width:130px;text-align:center;">this part still gives me goosebumps ✦</div>
+        </sc-if>
+        <div style="background:#fff;border:2.5px solid #201B13;border-radius:18px;box-shadow:6px 6px 0 #FFC53D;padding:clamp(22px,4vw,50px);">
+          <h2 style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(26px,4vw,40px);margin:0 0 4px;">The journey from law to UI/UX</h2>
+          <div style="font-family:'Caveat';font-size:20px;color:#59C29D;margin-bottom:18px;">— in my own words</div>
+          <div style="max-width:720px;font-family:'Nunito';font-weight:400;font-size:clamp(15.5px,1.8vw,18px);line-height:1.75;color:#2A241C;">
+            <p style="margin:0 0 18px;"><span style="float:left;font-family:'Shantell Sans';font-weight:700;font-size:64px;line-height:.8;padding:6px 12px 0 0;color:#FF6F61;">H</span>onestly, I never thought my journey would go from law to UI/UX design. When I started law, I genuinely believed that was the path I was meant to follow. And for a while, it was.</p>
+            <p style="margin:0 0 18px;">I didn't just study law — I practiced it. For years, my work revolved around drafting notices, petitions, and pleadings, studying case laws, and doing research. It was detailed, structured work that demanded precision and clarity in everything I put on paper. I was building a career, and from the outside, everything looked exactly as it was supposed to.</p>
+            <p style="margin:0 0 18px;">But somewhere in those years, something kept nagging at me. Not loudly, not in a way that disrupted my work — but it was always there.</p>
+            <p style="margin:0 0 18px;">The truth is, I was always a creative person. Since childhood, I loved drawing, sketching, doing craft work, and creating things with my own ideas. Creativity always made me feel calm and connected to myself. Even in the middle of an active legal career, I found myself paying attention to things others around me ignored — layouts, colors, how apps felt to use, why some interfaces frustrated me and others felt effortless. I'd be using a legal research tool and find myself more bothered by its terrible design than by the complexity of the case. I'd notice the government portals we were required to use and think — this is genuinely disrespectful to the people it's supposed to serve.</p>
+            <p style="margin:0 0 18px;">What I didn't realize was that I was noticing design — everywhere, all the time — without knowing that's what it was called.</p>
+            <blockquote style="margin:26px 0;padding:20px 24px;background:#FFFAEB;border:2.5px solid #201B13;border-radius:6px 22px 6px 22px;font-family:'Shantell Sans';font-weight:600;font-size:clamp(18px,2.4vw,24px);line-height:1.35;">"Someone sat down and made a thousand small decisions to make this feel this easy." — the night I really <em>looked</em> at Spotify.</blockquote>
+            <p style="margin:0 0 18px;">Then one evening, after a long day of work, I opened Spotify — something I had done a hundred times before. But this time, I actually stopped and looked at it. Really looked. The way the dark background made the album artwork pop. The typography, warm but modern. The spacing, the flow, the tiny animations — effortless and considered. Nothing was shouting for attention, yet everything was exactly where it needed to be. I wasn't just a user anymore. I was someone asking — who are the people that do this? And how do I become one of them?</p>
+            <p style="margin:0 0 18px;">I started reading about it quietly, in the margins of my legal life. One thing led to another, and I came across a case study — a designer walking through how they had redesigned a healthcare app to make it easier for elderly users to navigate. It was detailed, thoughtful, deeply human. I sat with it for a long time, feeling something I rarely felt inside a case file: completely absorbed. That was the first time I encountered the words UI/UX design as a discipline, and something quiet inside me said — this is closer to who you are.</p>
+            <p style="margin:0 0 18px;">For months, I held both worlds at once. Showing up to work during the day and coming home to read about wireframes and user flows at night. It felt almost strange — like leading a double life. But the more I explored design, the harder it became to ignore what it was doing to me. It was waking up a part of me that years of legal work had slowly been putting to sleep.</p>
+            <p style="margin:0 0 18px;">I realized design is not just about making things "look pretty." It's about understanding people, solving problems, and creating experiences that actually make someone's life easier. And that's where my legal background unknowingly helped me — because drafting and research also teach you to observe closely, analyze problems, think from different perspectives, and communicate with clarity. A lawyer and a designer are both, at their core, trying to make something complex feel simple for the person on the other side.</p>
+            <p style="margin:0 0 18px;">I made the decision to transition — not impulsively, but after months of honest reflection. Walking away from years of a career you've built, a professional identity you've earned, is not a small thing. The self-doubt was real. People around me had questions. I had questions. But every time I sat down to learn something new about design, those questions got quieter. The work itself kept answering them.</p>
+            <p style="margin:0 0 18px;">I started learning properly — user research, wireframing, prototyping, typography, color theory, visual hierarchy, spacing, user flows, accessibility, responsive design, and design systems. I learned Figma and started creating interfaces from scratch. There was a moment — finishing my very first wireframe, rough and imperfect as it was — where I felt more alive creatively than I had in a long time.</p>
+            <p style="margin:0 0 18px;">But excitement and execution are two very different things. When I shared my first design, the feedback was humbling. The transitions glitched. The layout was misaligned. The spacing felt inconsistent, the hierarchy confusing. I remember that familiar sting of realizing the gap between what you imagined and what you actually made. For a moment, it shook me. But only for a moment.</p>
+            <p style="margin:0 0 18px;">I went back to the drawing board — not out of obligation, but because something in me genuinely wanted to get it right. I spent hours on YouTube watching designers work through their process step by step. There was something almost meditative about it — watching a cursor move across Figma, seeing how they built a layout from nothing. Some videos I watched once. Others three, four, five times — pausing, rewinding, trying it myself, failing, going back again. That patience — sitting with something until it clicked — turned out to be one of the most valuable things I brought into design.</p>
+            <blockquote style="margin:26px 0;padding:20px 24px;background:#E0FAEC;border:2.5px solid #201B13;border-radius:22px 6px 22px 6px;font-family:'Shantell Sans';font-weight:600;font-size:clamp(18px,2.4vw,24px);line-height:1.35;">"This feels really intuitive." Three words — but I remember exactly where I was when I read them, because I knew how much work had gone into earning them.</blockquote>
+            <p style="margin:0 0 18px;">I corrected the alignment. I refined the transitions. I rethought layouts with fresh eyes — not just how things looked, but how they felt to navigate. I began seeking feedback intentionally, watching where people hesitated, where they got confused, where they naturally flowed. I stopped seeing criticism as a verdict and started seeing it as a compass. Feedback taught me what design actually is — an iterative process, not a one-time performance. You make, you share, you listen, you improve. And then you do it all over again.</p>
+            <p style="margin:0 0 18px;">What really changed me was understanding how much work goes behind even a single app screen. Now whenever I use an app or website, I see everything — the spacing, the colors, the user flow, the button placements, the tiny interactions, the typography. What feels simple to a user is the result of hours, days, sometimes weeks of thought. A smooth experience doesn't happen accidentally. And honestly, that realization made me respect design even more.</p>
+            <p style="margin:0;">Today, I don't look at my journey as "leaving law." I look at it as carrying everything those years gave me into something I truly connect with. Law gave me analytical thinking, resilience, and empathy. Design gave me creativity, freedom, and purpose. One built my mind. The other finally gave it somewhere it wanted to go. Choosing something that truly feels like you, even when it means starting over, is one of the bravest decisions a person can make.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    </sc-if>

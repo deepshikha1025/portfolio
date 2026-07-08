@@ -1,0 +1,44 @@
+<!-- ============ PROJECTS ============ -->
+    <sc-if value="{{ isProjects }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1120px;margin:0 auto;padding:clamp(26px,5vw,56px) clamp(18px,4vw,40px) clamp(50px,7vw,90px);animation:popin .4s ease both;">
+      <div style="font-family:'Caveat';font-size:clamp(20px,3vw,26px);color:#8B6DFF;transform:rotate(-1.5deg);">made with intention ✦</div>
+      <h1 style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(38px,7vw,72px);margin:2px 0 6px;letter-spacing:-.5px;">My projects</h1>
+      <p style="font-family:'Nunito';font-weight:600;font-size:clamp(15px,1.8vw,19px);max-width:660px;opacity:.8;margin:0 0 6px;">A selection of case studies and UI work. Each card opens the full project on Behance.</p>
+
+      <a href="{{ featured.href }}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;margin-bottom:26px;">
+        <div style="display:flex;flex-wrap:wrap;background:#fff;border:2.5px solid #201B13;border-radius:20px;box-shadow:7px 7px 0 #201B13;overflow:hidden;transition:transform .16s ease;" style-hover="transform:translateY(-5px)">
+          <div style="flex:1 1 320px;position:relative;background:{{ featured.bg }};min-height:250px;">
+            <sc-if value="{{ featured.hasImg }}" hint-placeholder-val="{{ true }}">{{ featured.imgEl }}</sc-if>
+            <sc-if value="{{ featured.noImg }}" hint-placeholder-val="{{ false }}"><image-slot id="{{ featured.id }}" shape="rect" style="display:block;width:100%;height:100%;min-height:250px;" placeholder="Drop your best project cover"></image-slot></sc-if>
+            <div style="position:absolute;top:14px;left:14px;background:#FFC53D;border:2px solid #201B13;font-family:'Shantell Sans';font-weight:700;font-size:12px;padding:5px 12px;border-radius:999px;">★ Featured</div>
+          </div>
+          <div style="flex:1 1 300px;padding:clamp(20px,3vw,34px);display:flex;flex-direction:column;justify-content:center;border-left:2.5px solid #201B13;">
+            <div style="font-family:'Shantell Sans';font-weight:600;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:{{ featured.color }};">{{ featured.tags }}</div>
+            <div style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(24px,3vw,34px);line-height:1.05;margin:6px 0 10px;">{{ featured.title }}</div>
+            <p style="font-family:'Nunito';font-weight:600;font-size:16px;opacity:.78;line-height:1.5;margin:0 0 18px;">{{ featured.desc }}</p>
+            <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Shantell Sans';font-weight:600;font-size:16px;color:{{ featured.color }};"><i class="ri-behance-fill"></i> View on Behance <i class="ri-arrow-right-up-line"></i></div>
+          </div>
+        </div>
+      </a>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="3">
+          <a href="{{ p.href }}" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;transform:rotate({{ p.rot }}deg);transition:transform .16s ease;" style-hover="transform:rotate(0deg) translateY(-6px)">
+            <div style="background:#fff;border:2.5px solid #201B13;border-radius:18px;box-shadow:6px 6px 0 #201B13;overflow:hidden;">
+              <div style="position:relative;background:{{ p.bg }};border-bottom:2.5px solid #201B13;">
+                <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ false }}">{{ p.imgEl }}</sc-if>
+                <sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ true }}"><image-slot id="{{ p.id }}" shape="rect" style="display:block;width:100%;height:180px;" placeholder="Drop project cover"></image-slot></sc-if>
+                <div style="position:absolute;top:10px;left:10px;background:#201B13;color:#FCF8F0;font-family:'Shantell Sans';font-weight:600;font-size:12px;padding:4px 10px;border-radius:20px;">{{ p.tags }}</div>
+              </div>
+              <div style="padding:16px 18px 18px;">
+                <div style="font-family:'Shantell Sans';font-weight:700;font-size:20px;line-height:1.1;">{{ p.title }}</div>
+                <p style="font-family:'Nunito';font-weight:600;font-size:14px;opacity:.75;margin:6px 0 14px;line-height:1.45;">{{ p.desc }}</p>
+                <div style="display:inline-flex;align-items:center;gap:7px;font-family:'Shantell Sans';font-weight:600;font-size:15px;color:{{ p.color }};">
+                  <i class="ri-behance-fill"></i> View on Behance <i class="ri-arrow-right-up-line"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+    </sc-if>

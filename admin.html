@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sketches — Reorder</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f1eb; color: #201B13; min-height: 100vh; }
+
+  .topbar { background: #201B13; color: #FCF8F0; padding: 16px 28px; display: flex; align-items: center; justify-content: space-between; gap: 16px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
+  .topbar h1 { font-size: 20px; font-weight: 700; }
+  .topbar .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .btn { padding: 8px 18px; border: 2px solid #201B13; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all .15s; }
+  .btn-primary { background: #59C29D; color: #fff; border-color: #59C29D; }
+  .btn-primary:hover { background: #4ab08c; }
+  .btn-secondary { background: #fff; color: #201B13; }
+  .btn-secondary:hover { background: #f0ece4; }
+  .btn-warn { background: #FFC53D; color: #201B13; border-color: #FFC53D; }
+  .btn-warn:hover { background: #f0b82e; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .badge { background: #FF6F61; color: #fff; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #201B13; color: #FCF8F0; padding: 12px 24px; border-radius: 12px; font-weight: 600; font-size: 14px; z-index: 200; display: none; box-shadow: 0 4px 20px rgba(0,0,0,.25); }
+  .toast.show { display: block; animation: toastIn .3s ease; }
+  @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(12px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  .hint { background: #EFEBFF; border: 2px solid #8B6DFF; border-radius: 12px; padding: 14px 18px; margin-bottom: 24px; font-size: 14px; line-height: 1.5; }
+  .hint strong { color: #8B6DFF; }
+
+  .category { background: #fff; border: 2.5px solid #201B13; border-radius: 16px; margin-bottom: 24px; box-shadow: 4px 4px 0 rgba(32,27,19,.15); overflow: hidden; }
+  .cat-header { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 2px dashed rgba(32,27,19,.15); flex-wrap: wrap; }
+  .cat-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #201B13; flex: none; }
+  .cat-title { font-size: 20px; font-weight: 700; }
+  .cat-note { font-size: 14px; opacity: .6; }
+  .cat-count { font-size: 13px; font-weight: 600; background: #f0ece4; padding: 3px 10px; border-radius: 999px; margin-left: auto; }
+
+  .image-grid { display: flex; flex-wrap: wrap; gap: 16px; padding: 20px; min-height: 100px; transition: background .15s; }
+  .image-grid.drag-over { background: rgba(89,194,157,.08); outline: 2px dashed #59C29D; outline-offset: -4px; border-radius: 0 0 14px 14px; }
+  .empty-msg { font-size: 15px; opacity: .4; font-style: italic; padding: 20px; }
+
+  .image-card { position: relative; width: 140px; cursor: grab; transition: transform .12s, opacity .12s; user-select: none; }
+  .image-card:active { cursor: grabbing; }
+  .image-card:hover { transform: translateY(-3px); }
+  .image-card.dragging { opacity: .3; transform: scale(.92); }
+  .image-card .thumb { width: 140px; height: 140px; object-fit: cover; border: 2.5px solid #201B13; border-radius: 10px; display: block; background: #f2ede3; pointer-events: none; }
+  .image-card .name { font-size: 11px; font-weight: 600; margin-top: 5px; text-align: center; word-break: break-all; opacity: .6; }
+  .image-card .idx { position: absolute; top: -6px; left: -6px; width: 22px; height: 22px; background: #201B13; color: #FCF8F0; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; z-index: 2; }
+
+  .drop-zone { width: 6px; min-height: 140px; border-radius: 3px; flex: none; transition: all .15s; align-self: stretch; }
+  .drop-zone.active { width: 6px; background: #3FA7D6; box-shadow: 0 0 8px rgba(63,167,214,.4); }
+
+  @media (max-width: 600px) {
+    .image-card { width: 100px; }
+    .image-card .thumb { width: 100px; height: 100px; }
+    .topbar { padding: 12px 16px; }
+    .topbar h1 { font-size: 17px; }
+    .container { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>Reorder Sketches</h1>
+  <div class="actions">
+    <button class="btn btn-secondary" onclick="resetAll()">Reset</button>
+    <button class="btn btn-warn" id="downloadBtn" onclick="downloadConfig()" disabled>Download sketches.js</button>
+    <span id="changesBadge"></span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="hint">
+    <strong>Drag & drop</strong> images to reorder within a category or move between categories.
+    When done, hit <strong>Download sketches.js</strong> and replace it in your project, then run
+    <code>python3 build.py</code> and push.
+  </div>
+  <div id="app"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="sketches.js"></script>
+<script>
+// Deep clone the original so we can reset
+const ORIGINAL = JSON.parse(JSON.stringify(SKETCH_CATEGORIES));
+let DATA = JSON.parse(JSON.stringify(SKETCH_CATEGORIES));
+let changes = 0;
+
+function showToast(msg, ms) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), ms || 2500);
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function updateChanges() {
+  // Count how many images changed position vs original
+  let diff = 0;
+  for (let ci = 0; ci < DATA.length; ci++) {
+    const orig = ORIGINAL[ci].files;
+    const curr = DATA[ci].files;
+    const maxLen = Math.max(orig.length, curr.length);
+    for (let fi = 0; fi < maxLen; fi++) {
+      if (orig[fi] !== curr[fi]) diff++;
+    }
+  }
+  changes = diff;
+  const badge = document.getElementById('changesBadge');
+  const btn = document.getElementById('downloadBtn');
+  if (diff > 0) {
+    badge.innerHTML = '<span class="badge">' + diff + ' changes</span>';
+    btn.disabled = false;
+  } else {
+    badge.innerHTML = '';
+    btn.disabled = true;
+  }
+}
+
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = DATA.map((cat, ci) => `
+    <div class="category" data-cat="${ci}">
+      <div class="cat-header">
+        <div class="cat-dot" style="background:${cat.color}"></div>
+        <span class="cat-title">${esc(cat.title)}</span>
+        <span class="cat-note">${esc(cat.note)}</span>
+        <span class="cat-count">${cat.files.length} images</span>
+      </div>
+      <div class="image-grid" data-cat="${ci}"
+           ondragover="gridDragOver(event)" ondrop="gridDrop(event, ${ci})" ondragleave="gridDragLeave(event)">
+        ${cat.files.length === 0 ? '<div class="empty-msg">No images — drag one here</div>' : ''}
+        ${cat.files.map((f, fi) => `
+          <div class="image-card" draggable="true" data-cat="${ci}" data-idx="${fi}"
+               ondragstart="cardDragStart(event, ${ci}, ${fi})"
+               ondragend="cardDragEnd(event)"
+               ontouchstart="touchStart(event, ${ci}, ${fi})">
+            <div class="idx">${fi + 1}</div>
+            <img class="thumb" src="uploads/${encodeURIComponent(f)}" alt="${esc(f)}" loading="lazy"
+                 onerror="this.style.background='#ffe0e0';this.alt='missing'">
+            <div class="name">${esc(f)}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+  updateChanges();
+}
+
+// ── Drag & Drop ──
+let dragCat = -1, dragIdx = -1;
+
+function cardDragStart(e, ci, fi) {
+  dragCat = ci;
+  dragIdx = fi;
+  e.target.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', ci + ':' + fi);
+}
+
+function cardDragEnd(e) {
+  e.target.classList.remove('dragging');
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+
+function gridDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  e.currentTarget.classList.add('drag-over');
+}
+
+function gridDragLeave(e) {
+  if (!e.currentTarget.contains(e.relatedTarget)) {
+    e.currentTarget.classList.remove('drag-over');
+  }
+}
+
+function gridDrop(e, targetCat) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (dragCat < 0) return;
+
+  const file = DATA[dragCat].files[dragIdx];
+
+  // Find drop position based on cursor x
+  const cards = [...e.currentTarget.querySelectorAll('.image-card')];
+  let dropIdx = DATA[targetCat].files.length;
+  for (let i = 0; i < cards.length; i++) {
+    const rect = cards[i].getBoundingClientRect();
+    const mid = rect.left + rect.width / 2;
+    if (e.clientX < mid) {
+      dropIdx = parseInt(cards[i].dataset.idx);
+      break;
+    }
+  }
+
+  // Remove from source
+  DATA[dragCat].files.splice(dragIdx, 1);
+  // Adjust if same category
+  if (dragCat === targetCat && dragIdx < dropIdx) dropIdx--;
+  // Insert
+  DATA[targetCat].files.splice(dropIdx, 0, file);
+
+  dragCat = -1;
+  dragIdx = -1;
+  render();
+  showToast('Moved: ' + file);
+}
+
+// ── Touch support for mobile ──
+let touchEl = null, touchClone = null, touchCat = -1, touchIdx = -1;
+
+function touchStart(e, ci, fi) {
+  if (e.touches.length !== 1) return;
+  const card = e.currentTarget;
+  const touch = e.touches[0];
+
+  const timer = setTimeout(() => {
+    touchCat = ci;
+    touchIdx = fi;
+    touchEl = card;
+    card.classList.add('dragging');
+
+    touchClone = card.cloneNode(true);
+    touchClone.style.position = 'fixed';
+    touchClone.style.zIndex = '9999';
+    touchClone.style.pointerEvents = 'none';
+    touchClone.style.opacity = '0.8';
+    touchClone.style.width = card.offsetWidth + 'px';
+    touchClone.classList.remove('dragging');
+    document.body.appendChild(touchClone);
+    moveTouchClone(touch);
+
+    document.addEventListener('touchmove', onTouchMove, { passive: false });
+    document.addEventListener('touchend', onTouchEnd);
+  }, 300);
+
+  const cancel = () => { clearTimeout(timer); card.removeEventListener('touchend', cancel); card.removeEventListener('touchmove', cancel); };
+  card.addEventListener('touchend', cancel, { once: true });
+  card.addEventListener('touchmove', cancel, { once: true });
+}
+
+function moveTouchClone(touch) {
+  if (!touchClone) return;
+  touchClone.style.left = (touch.clientX - 70) + 'px';
+  touchClone.style.top = (touch.clientY - 70) + 'px';
+}
+
+function onTouchMove(e) {
+  e.preventDefault();
+  moveTouchClone(e.touches[0]);
+}
+
+function onTouchEnd(e) {
+  document.removeEventListener('touchmove', onTouchMove);
+  document.removeEventListener('touchend', onTouchEnd);
+  if (touchClone) { touchClone.remove(); touchClone = null; }
+  if (touchEl) { touchEl.classList.remove('dragging'); }
+
+  if (touchCat < 0) return;
+
+  const touch = e.changedTouches[0];
+  const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+  const grid = dropTarget ? dropTarget.closest('.image-grid') : null;
+
+  if (grid) {
+    const targetCat = parseInt(grid.dataset.cat);
+    const file = DATA[touchCat].files[touchIdx];
+    const cards = [...grid.querySelectorAll('.image-card')];
+    let dropIdx = DATA[targetCat].files.length;
+    for (let i = 0; i < cards.length; i++) {
+      const rect = cards[i].getBoundingClientRect();
+      if (touch.clientX < rect.left + rect.width / 2) {
+        dropIdx = parseInt(cards[i].dataset.idx);
+        break;
+      }
+    }
+
+    DATA[touchCat].files.splice(touchIdx, 1);
+    if (touchCat === targetCat && touchIdx < dropIdx) dropIdx--;
+    DATA[targetCat].files.splice(dropIdx, 0, file);
+    showToast('Moved: ' + file);
+  }
+
+  touchCat = -1; touchIdx = -1; touchEl = null;
+  render();
+}
+
+// ── Reset ──
+function resetAll() {
+  DATA = JSON.parse(JSON.stringify(ORIGINAL));
+  render();
+  showToast('Reset to original order');
+}
+
+// ── Download ──
+function downloadConfig() {
+  let lines = [
+    '/*',
+    ' * ─── SKETCHES CONFIG ───',
+    ' * Edit filenames to change images, reorder lines to change display order.',
+    ' * To swap an image: replace the filename here AND the file in uploads/',
+    ' * To reorder: move the filename line up or down within its category',
+    ' * To move between categories: cut a filename from one "files" array, paste into another',
+    ' */',
+    '',
+    '// eslint-disable-next-line no-unused-vars',
+    'var SKETCH_CATEGORIES = [',
+  ];
+  DATA.forEach((cat) => {
+    lines.push('');
+    lines.push('  // \u2500\u2500 ' + cat.title + ' \u2500\u2500');
+    lines.push('  {');
+    lines.push('    title: ' + JSON.stringify(cat.title) + ',');
+    lines.push('    note: ' + JSON.stringify(cat.note) + ',');
+    lines.push('    icon: ' + JSON.stringify(cat.icon) + ',');
+    lines.push('    color: ' + JSON.stringify(cat.color) + ',');
+    lines.push('    files: [');
+    cat.files.forEach(f => lines.push('      ' + JSON.stringify(f) + ','));
+    lines.push('    ],');
+    lines.push('  },');
+  });
+  lines.push('];');
+  lines.push('');
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/javascript' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'sketches.js';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('Downloaded! Replace sketches.js in your project, run python3 build.py, and push.');
+}
+
+render();
+</script>
+</body>
+</html>
