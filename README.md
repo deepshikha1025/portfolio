@@ -151,4 +151,4 @@ All config files can be edited directly instead of using the dashboard. Run `pyt
 
 ## Deploy
 
-Push to the repo and Vercel picks up the changes automatically.
+Push to the repo and Vercel picks up the changes automatically. 
