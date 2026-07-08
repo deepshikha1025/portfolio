@@ -13,4 +13,8 @@ python3 build.py
 
 # Start dashboard
 echo ""
+echo "Dashboard:  http://localhost:4444"
+echo "Portfolio:  open index.html in browser"
+echo "Admin:      open admin.html in browser (or yoursite.vercel.app/admin.html)"
+echo ""
 python3 dashboard.py

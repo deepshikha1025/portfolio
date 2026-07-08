@@ -7,9 +7,12 @@ portfolio/
 ├── index.html          ← Built output (don't edit directly)
 ├── sketches.js         ← Sketch image config (names, order, categories)
 ├── projects.js         ← Projects config (title, desc, image, link)
+├── journey.js          ← Journey timeline config (steps, icons, colors)
+├── skills.js           ← Skills config ("What I do" cards)
+├── socials.js          ← Social links config (label, icon, URL)
 ├── admin.html          ← Live reorder dashboard (works on Vercel)
 ├── build.py            ← Rebuilds index.html from src/
-├── dashboard.py        ← Local dashboard (sketches + projects)
+├── dashboard.py        ← Local dashboard (all content tabs)
 ├── start.sh            ← One command to build + launch dashboard
 ├── uploads/            ← All image files
 ├── src/
@@ -89,24 +92,62 @@ Opens `http://localhost:4444` → **Projects** tab
 - Remove projects
 - Hit **Save & Build** — saves `projects.js` and rebuilds `index.html` automatically
 
-### Manually via config file
+## Managing Journey Steps
 
-Edit `projects.js` directly — each project is an object:
+### Locally — Add, Edit, Remove & Reorder
 
-```js
-{
-  title: "Project Name",
-  desc: "Short description.",
-  tags: "UI · Mobile",
-  color: "#3FA7D6",
-  bg: "#EBF1FF",
-  rot: -1.5,
-  href: "https://www.behance.net/...",
-  img: "uploads/your-image.jpg",
-}
+```
+python3 dashboard.py
 ```
 
-Then run `python3 build.py`.
+Opens `http://localhost:4444` → **Journey** tab
+
+- Add/edit timeline steps (title, story text, icon, accent color)
+- Drag & drop to reorder the storyboard sequence
+- Remove steps
+- Hit **Save & Build** — saves `journey.js` and rebuilds `index.html`
+
+## Managing Skills
+
+### Locally — Add, Edit, Remove & Reorder
+
+```
+python3 dashboard.py
+```
+
+Opens `http://localhost:4444` → **Skills** tab
+
+- Add/edit "What I do" cards (label, description, icon, accent color)
+- Drag & drop to reorder
+- Remove skills
+- Hit **Save & Build** — saves `skills.js` and rebuilds `index.html`
+
+## Managing Social Links
+
+### Locally — Add, Edit, Remove & Reorder
+
+```
+python3 dashboard.py
+```
+
+Opens `http://localhost:4444` → **Socials** tab
+
+- Add/edit social links (label, URL, icon, accent color)
+- Drag & drop to reorder
+- Remove links
+- Hit **Save & Build** — saves `socials.js` and rebuilds `index.html`
+
+## Config Files Reference
+
+All config files can be edited directly instead of using the dashboard. Run `python3 build.py` after manual edits.
+
+| File | Variable | Controls |
+|------|----------|----------|
+| `sketches.js` | `SKETCH_CATEGORIES` | Sketch gallery categories & images |
+| `projects.js` | `PROJECT_DEFINITIONS` | Project cards (first = featured) |
+| `journey.js` | `JOURNEY_STEPS` | Timeline storyboard steps |
+| `skills.js` | `SKILL_DEFINITIONS` | "What I do" skill cards |
+| `socials.js` | `SOCIAL_LINKS` | Social media links |
 
 ## Deploy
 

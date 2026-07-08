@@ -1,12 +1,6 @@
 /*
  * ─── PROJECTS CONFIG ───
- * The first project is shown as the large featured card.
- * The rest show as smaller cards below it.
- * Reorder to change which is featured.
- *
- * Available colors: #3FA7D6 (blue), #FF6F61 (red), #8B6DFF (purple),
- *                   #59C29D (green), #E0A400 (yellow)
- * bg should be a matching pastel: #EBF1FF, #FFF3EB, #EFEBFF, #E0FAEC, #FFFAEB
+ * First project is the large featured card.
  */
 
 // eslint-disable-next-line no-unused-vars
@@ -14,7 +8,7 @@ var PROJECT_DEFINITIONS = [
   {
     title: "Spatial UI for a Car Booking Platform",
     desc: "Designing an immersive spatial interface for seamless car booking experiences.",
-    tags: "Spatial UI · UX",
+    tags: "Spatial UI \u00b7 UX",
     color: "#3FA7D6",
     bg: "#EBF1FF",
     rot: -1.5,
@@ -24,7 +18,7 @@ var PROJECT_DEFINITIONS = [
   {
     title: "Fashion Clothing App Design",
     desc: "A stylish mobile app experience for browsing & shopping fashion.",
-    tags: "UI · Mobile",
+    tags: "UI \u00b7 Mobile",
     color: "#FF6F61",
     bg: "#FFF3EB",
     rot: 1.5,
@@ -34,7 +28,7 @@ var PROJECT_DEFINITIONS = [
   {
     title: "AI Enhanced Customer Support Platform",
     desc: "Streamlining customer support with AI-powered interactions & smart workflows.",
-    tags: "AI · UX · Web",
+    tags: "AI \u00b7 UX \u00b7 Web",
     color: "#8B6DFF",
     bg: "#EFEBFF",
     rot: -2,
