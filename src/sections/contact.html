@@ -1,0 +1,58 @@
+<!-- ============ CONTACT ============ -->
+    <sc-if value="{{ isContact }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1120px;margin:0 auto;padding:clamp(26px,5vw,56px) clamp(18px,4vw,40px) clamp(50px,7vw,90px);animation:popin .4s ease both;">
+      <div style="font-family:'Caveat';font-size:clamp(20px,3vw,26px);color:#FF6F61;transform:rotate(-1.5deg);">let's make something ✦</div>
+      <h1 style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(38px,7vw,72px);margin:2px 0 6px;letter-spacing:-.5px;">Contact me</h1>
+      <p style="font-family:'Nunito';font-weight:600;font-size:clamp(15px,1.8vw,19px);max-width:600px;opacity:.8;margin:0 0 28px;">Have a project, a question, or just want to say hi? Write to me — I read every message.</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;">
+        <!-- details -->
+        <div style="flex:1 1 300px;">
+          <div style="background:#FFF3EB;border:2.5px solid #201B13;border-radius:18px;box-shadow:5px 5px 0 #201B13;padding:24px 24px 26px;">
+            <div style="font-family:'Shantell Sans';font-weight:700;font-size:20px;margin-bottom:14px;">Reach me at</div>
+            <a href="mailto:deepshikha.ranjan10@gmail.com" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#201B13;padding:11px 0;border-bottom:2px dashed rgba(32,27,19,0.2);font-family:'Nunito';font-weight:700;font-size:16px;">
+              <span style="width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center;background:#fff;border:2.5px solid #201B13;border-radius:50%;font-size:18px;color:#FF6F61;"><i class="ri-mail-line"></i></span>
+              deepshikha.ranjan10@gmail.com
+            </a>
+            <div style="display:flex;align-items:center;gap:12px;padding:11px 0;font-family:'Nunito';font-weight:700;font-size:16px;">
+              <span style="width:38px;height:38px;flex:none;display:flex;align-items:center;justify-content:center;background:#fff;border:2.5px solid #201B13;border-radius:50%;font-size:18px;color:#3FA7D6;"><i class="ri-map-pin-line"></i></span>
+              India — open to remote work
+            </div>
+
+            <a href="mailto:deepshikha.ranjan10@gmail.com?subject=R%C3%A9sum%C3%A9%20request&amp;body=Hi%20Deepshikha%2C%20I%27d%20like%20to%20request%20your%20r%C3%A9sum%C3%A9.%20A%20little%20about%20me%20%2F%20the%20role%3A%20" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:#FCF8F0;background:#201B13;border:2.5px solid #201B13;border-radius:14px;padding:12px 16px;font-family:'Shantell Sans';font-weight:600;font-size:16px;box-shadow:3px 3px 0 #FFC53D;margin:20px 0 6px;" style-hover="opacity:.9">
+              <i class="ri-file-text-line" style="font-size:20px;"></i> Request my résumé <i class="ri-arrow-right-up-line" style="margin-left:auto;"></i>
+            </a>
+            <div style="font-family:'Caveat';font-size:16px;color:#8B6DFF;">Shared privately on request — I'll send it over if we're a good fit ✎</div>
+
+            <div style="font-family:'Shantell Sans';font-weight:700;font-size:20px;margin:22px 0 12px;">Find me online</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <sc-for list="{{ socials }}" as="so" hint-placeholder-count="3">
+                <a href="{{ so.href }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:#201B13;background:#fff;border:2.5px solid #201B13;border-radius:14px;padding:11px 14px;font-family:'Shantell Sans';font-weight:600;font-size:16px;box-shadow:3px 3px 0 #201B13;transition:transform .14s ease;" style-hover="transform:translateX(3px)">
+                  <span style="font-size:22px;color:{{ so.color }};"><i class="{{ so.icon }}"></i></span>
+                  {{ so.label }}
+                  <i class="ri-arrow-right-up-line" style="margin-left:auto;opacity:.5;"></i>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- form -->
+        <div style="flex:1 1 340px;">
+          <div style="position:relative;background:#fff;border:2.5px solid #201B13;border-radius:18px;box-shadow:6px 6px 0 #FFC53D;padding:26px 26px 28px;">
+            <div style="position:absolute;top:-16px;right:22px;font-family:'Caveat';font-size:22px;color:#59C29D;transform:rotate(4deg);background:#FCF8F0;padding:0 8px;">write to me →</div>
+            <label style="display:block;font-family:'Shantell Sans';font-weight:600;font-size:15px;margin:0 0 6px;">Your name</label>
+            <input type="text" value="{{ cName }}" oninput="{{ onName }}" placeholder="e.g. Aarav Mehta" style="width:100%;padding:12px 14px;border:2.5px solid #201B13;border-radius:12px;font-size:15px;font-weight:600;background:#FCFBF7;margin-bottom:16px;outline:none;">
+            <label style="display:block;font-family:'Shantell Sans';font-weight:600;font-size:15px;margin:0 0 6px;">Your email</label>
+            <input type="email" value="{{ cEmail }}" oninput="{{ onEmail }}" placeholder="you@email.com" style="width:100%;padding:12px 14px;border:2.5px solid #201B13;border-radius:12px;font-size:15px;font-weight:600;background:#FCFBF7;margin-bottom:16px;outline:none;">
+            <label style="display:block;font-family:'Shantell Sans';font-weight:600;font-size:15px;margin:0 0 6px;">Your message</label>
+            <textarea rows="4" value="{{ cMsg }}" oninput="{{ onMsg }}" placeholder="Tell me a little about what you have in mind…" style="width:100%;padding:12px 14px;border:2.5px solid #201B13;border-radius:12px;font-size:15px;font-weight:600;background:#FCFBF7;margin-bottom:18px;outline:none;"></textarea>
+            <button onclick="{{ sendMail }}" style="width:100%;cursor:pointer;background:#201B13;color:#FCF8F0;border:none;font-family:'Shantell Sans';font-weight:600;font-size:18px;padding:14px;border-radius:14px;box-shadow:4px 4px 0 #FF6F61;display:inline-flex;align-items:center;justify-content:center;gap:9px;" style-hover="opacity:.9">
+              Send message <i class="ri-send-plane-fill"></i>
+            </button>
+            <div style="font-family:'Caveat';font-size:16px;color:#8B6DFF;text-align:center;margin-top:12px;">this opens your email app, pre-filled ✎</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    </sc-if>

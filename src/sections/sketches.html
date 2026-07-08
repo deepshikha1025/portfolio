@@ -1,0 +1,51 @@
+<!-- ============ SKETCHES ============ -->
+    <sc-if value="{{ isSketches }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1120px;margin:0 auto;padding:clamp(26px,5vw,56px) clamp(18px,4vw,40px) clamp(50px,7vw,90px);animation:popin .4s ease both;">
+      <div style="font-family:'Caveat';font-size:clamp(20px,3vw,26px);color:#59C29D;transform:rotate(-1.5deg);">the receipts ✎</div>
+      <h1 style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(38px,7vw,72px);margin:2px 0 6px;letter-spacing:-.5px;">My sketches</h1>
+      <p style="font-family:'Nunito';font-weight:600;font-size:clamp(15px,1.8vw,19px);max-width:680px;opacity:.8;margin:0 0 6px;">Drawings, paintings, sketches and craft made over the years — the creativity was always there, long before it had a name. Grouped by the mediums and styles I love.</p>
+      <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Caveat';font-size:19px;color:#8B6DFF;margin-bottom:20px;transform:rotate(-1deg);"><i class="ri-cursor-line"></i>{{ sketchCount }} pieces — tap a piece to pick it up, then tap another section to move it there ✎</div>
+
+      <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="7">
+        <div onclick="{{ cat.onDropHere }}" style="margin-top:clamp(30px,4vw,46px);border-radius:16px;padding:6px;transition:background .15s ease;background:{{ cat.dropBg }};">
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2.5px dashed rgba(32,27,19,0.2);padding-bottom:8px;margin-bottom:22px;">
+            <span style="width:34px;height:34px;flex:none;align-self:center;display:flex;align-items:center;justify-content:center;background:{{ cat.color }};border:2.5px solid #201B13;border-radius:58% 42% 50% 50%/50% 55% 45% 50%;font-size:18px;color:#fff;"><i class="{{ cat.icon }}"></i></span>
+            <h2 style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(22px,3vw,30px);margin:0;">{{ cat.title }}</h2>
+            <span style="font-family:'Caveat';font-size:20px;color:#FF6F61;">{{ cat.note }}</span>
+            <sc-if value="{{ cat.showMoveHere }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family:'Shantell Sans';font-weight:600;font-size:14px;color:#fff;background:#FF6F61;border:2px solid #201B13;border-radius:999px;padding:3px 12px;">tap to move here ↓</span>
+            </sc-if>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:clamp(18px,2.6vw,30px);align-items:flex-start;min-height:90px;">
+            <sc-if value="{{ cat.empty }}" hint-placeholder-val="{{ false }}">
+              <div style="font-family:'Caveat';font-size:20px;color:#8B6DFF;opacity:.7;border:2.5px dashed rgba(32,27,19,0.25);border-radius:12px;padding:24px 34px;">this section is empty</div>
+            </sc-if>
+            <sc-for list="{{ cat.items }}" as="art" hint-placeholder-count="6">
+              <div onclick="{{ art.onSelect }}" style="position:relative;transform:rotate({{ art.rot }}deg) scale({{ art.scale }});cursor:pointer;transition:transform .12s ease;z-index:{{ art.z }};">
+                <sc-if value="{{ art.sel }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;inset:-9px;border:3.5px dashed #FF6F61;border-radius:12px;z-index:5;pointer-events:none;"></div>
+                  <div style="position:absolute;top:-16px;right:-10px;z-index:6;background:#FF6F61;color:#fff;font-family:'Shantell Sans';font-weight:700;font-size:11px;padding:2px 8px;border:2px solid #201B13;border-radius:999px;pointer-events:none;">picked up</div>
+                </sc-if>
+                <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%) rotate({{ art.tapeRot }}deg);width:62px;height:22px;background:{{ art.tape }};opacity:.82;border:1px solid rgba(32,27,19,0.25);z-index:3;box-shadow:0 2px 4px rgba(0,0,0,0.08);"></div>
+                <div style="background:#fff;padding:9px 9px 11px;border:2.5px solid #201B13;box-shadow:5px 6px 0 rgba(32,27,19,0.85);">
+                  <img src="{{ art.src }}" loading="lazy" draggable="false" alt="Artwork by Deepshikha Ranjan" style="display:block;width:196px;height:auto;background:#f2ede3;pointer-events:none;">
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+
+      <sc-if value="{{ hasSelected }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:70;background:#fff;border:2.5px solid #201B13;border-radius:16px;box-shadow:5px 5px 0 #201B13;padding:10px 12px;max-width:calc(100vw - 20px);">
+          <div style="font-family:'Shantell Sans';font-weight:700;font-size:14px;margin:0 2px 8px;">Picked up a piece — tap where it belongs:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:7px;">
+            <sc-for list="{{ moveTargets }}" as="mt" hint-placeholder-count="7">
+              <button onclick="{{ mt.onClick }}" style="cursor:pointer;font-family:'Shantell Sans';font-weight:600;font-size:13px;padding:7px 12px;border:2px solid #201B13;border-radius:999px;background:{{ mt.bg }};color:#201B13;">{{ mt.title }}</button>
+            </sc-for>
+            <button onclick="{{ clearSelect }}" style="cursor:pointer;font-family:'Shantell Sans';font-weight:600;font-size:13px;padding:7px 14px;border:2px solid #201B13;border-radius:999px;background:#201B13;color:#fff;">Cancel</button>
+          </div>
+        </div>
+      </sc-if>
+    </section>
+    </sc-if>

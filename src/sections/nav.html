@@ -1,0 +1,22 @@
+<!-- ============ NAV ============ -->
+    <nav style="position:fixed;top:0;left:0;right:0;z-index:40;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 8px;padding:12px clamp(16px,4vw,48px);background:rgba(252,248,240,0.92);backdrop-filter:blur(6px);border-bottom:2.5px dashed rgba(32,27,19,0.22);">
+      <div onclick="{{ goHome }}" style="display:flex;align-items:center;gap:12px;cursor:pointer;">
+        <div style="width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:#FFC53D;border:2.5px solid #201B13;border-radius:62% 38% 55% 45%/55% 45% 62% 38%;font-family:'Shantell Sans';font-weight:700;font-size:20px;box-shadow:3px 3px 0 #201B13;">DR</div>
+        <div style="line-height:1;">
+          <div style="font-family:'Shantell Sans';font-weight:700;font-size:18px;">Deepshikha Ranjan</div>
+          <div style="font-family:'Caveat';font-size:16px;color:#FF6F61;margin-top:2px;">law → UI/UX</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:2px 4px;align-items:center;">
+        <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+          <div onclick="{{ item.onClick }}" style="position:relative;padding:7px 13px;cursor:pointer;font-family:'Shantell Sans';font-weight:600;font-size:clamp(15px,1.5vw,17px);border-radius:14px;transition:background .14s ease;" style-hover="background:rgba(63,167,214,0.14)">
+            {{ item.label }}
+            <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">
+              <svg viewBox="0 0 120 12" preserveAspectRatio="none" style="position:absolute;left:10px;right:10px;bottom:-2px;width:calc(100% - 20px);height:8px;overflow:visible;">
+                <path d="M2 7 C 22 2, 42 11, 62 6 S 100 3, 118 7" fill="none" stroke="#FF6F61" stroke-width="3" stroke-linecap="round"></path>
+              </svg>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </nav>
