@@ -67,7 +67,7 @@ template += '</helmet>\n\n'
 template += read('layout-open.html').strip() + '\n\n    '
 
 # Sections
-for section in ['nav', 'home', 'journey', 'sketches', 'projects', 'contact', 'footer']:
+for section in ['nav', 'home', 'journey', 'sketches', 'projects', 'contact', 'games', 'footer']:
     template += read(f'sections/{section}.html').strip() + '\n\n    '
 
 # Layout close (closing divs)
