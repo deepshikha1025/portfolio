@@ -1,5 +1,5 @@
 class Component extends DCLogic {
-  state = { screen: 'home', step: 0, cName: '', cEmail: '', cMsg: '', overrides: {}, selected: null, portraitImg: 'uploads/portrait.png', pX: 0, pY: 0, pScale: 1, activeGame: 'ttt', tttBoard: Array(9).fill(''), tttTurn: 'X', skPuzzle: 0, skBoard: null, skSel: -1 };
+  state = { screen: 'home', step: 0, cName: '', cEmail: '', cMsg: '', overrides: {}, selected: null, portraitImg: 'uploads/portrait.png', pX: 0, pY: 0, pScale: 1, activeGame: 'ttt', tttBoard: Array(9).fill(''), tttTurn: 'X', skPuzzle: 0, skBoard: null, skSel: -1, fpTiles: null, fpMoves: 0, fpImgIdx: 0 };
   fileRef = React.createRef();
 
   componentDidMount() {
@@ -220,6 +220,56 @@ class Component extends DCLogic {
       )
     );
 
+    // 15 Puzzle (sliding tiles)
+    const FP_IMGS = ['uploads/paintings_1.jpg','uploads/paintings_2.jpg','uploads/charcoal_1.jpg','uploads/modern_boho_1.jpg','uploads/rangoli_folkart_1.jpg','uploads/pencil_portraits_3.jpg'];
+    const fpImgIdx = this.state.fpImgIdx || 0;
+    const fpImg = FP_IMGS[fpImgIdx % FP_IMGS.length];
+    const fpShuffle = () => {
+      const tiles = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+      for (let i = tiles.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = tiles[i]; tiles[i] = tiles[j]; tiles[j] = t; }
+      let inv = 0; for (let i = 0; i < 16; i++) { for (let j = i + 1; j < 16; j++) { if (tiles[i] && tiles[j] && tiles[i] > tiles[j]) inv++; } }
+      const blankRow = Math.floor(tiles.indexOf(0) / 4);
+      if ((inv + blankRow) % 2 !== 1) { const a = tiles[0] === 0 ? 1 : 0; const b = tiles[1] === 0 ? 2 : 1; const t = tiles[a]; tiles[a] = tiles[b]; tiles[b] = t; }
+      return tiles;
+    };
+    const fpTiles = this.state.fpTiles || fpShuffle();
+    const fpBlank = fpTiles.indexOf(0);
+    const fpSolved = fpTiles.every((v, i) => v === (i + 1) % 16);
+    const fpMoves = this.state.fpMoves || 0;
+    const fpSlide = (i) => {
+      if (fpSolved) return;
+      const br = Math.floor(fpBlank / 4), bc = fpBlank % 4, tr = Math.floor(i / 4), tc = i % 4;
+      if ((Math.abs(br - tr) === 1 && bc === tc) || (Math.abs(bc - tc) === 1 && br === tr)) {
+        const nt = [...fpTiles]; nt[fpBlank] = nt[i]; nt[i] = 0;
+        this.setState({ fpTiles: nt, fpMoves: fpMoves + 1 });
+      }
+    };
+    const fpSize = 'clamp(60px, 18vw, 85px)';
+
+    const puzzleEl = h('div', null,
+      h('div', { style: { position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', width: 'fit-content', border: '3px solid #201B13', borderRadius: '14px', overflow: 'hidden', background: '#f2ede3' } },
+        ...fpTiles.map((v, i) => {
+          if (v === 0) return h('div', { key: 'blank', style: { width: fpSize, height: fpSize, background: fpSolved ? 'transparent' : '#f2ede3' } });
+          const origR = Math.floor((v - 1) / 4), origC = (v - 1) % 4;
+          const bgX = origC * 33.333, bgY = origR * 33.333;
+          return h('div', { key: v, onClick: () => fpSlide(i),
+            style: { width: fpSize, height: fpSize, backgroundImage: 'url(' + fpImg + ')', backgroundSize: '400% 400%', backgroundPosition: bgX + '% ' + bgY + '%', cursor: fpSolved ? 'default' : 'pointer', border: '1px solid rgba(32,27,19,.15)', transition: 'transform .1s', boxSizing: 'border-box' }
+          });
+        })
+      ),
+      h('div', { style: { marginTop: '14px', display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' } },
+        fpSolved && fpMoves > 0 ? h('span', { style: { fontFamily: "'Shantell Sans'", fontWeight: 700, fontSize: '18px', color: '#59C29D' } }, 'Solved in ' + fpMoves + ' moves!') : h('span', { style: { fontFamily: "'Caveat'", fontSize: '16px', opacity: .6 } }, fpMoves + ' moves'),
+        h('button', { onClick: () => this.setState({ fpTiles: fpShuffle(), fpMoves: 0 }),
+          style: { padding: '8px 18px', border: '2.5px solid #201B13', borderRadius: '12px', background: '#fff', fontFamily: "'Shantell Sans'", fontWeight: 600, fontSize: '14px', cursor: 'pointer', boxShadow: '3px 3px 0 #59C29D' } }, 'Shuffle'),
+        h('button', { onClick: () => { const ni = (fpImgIdx + 1) % FP_IMGS.length; this.setState({ fpImgIdx: ni, fpTiles: fpShuffle(), fpMoves: 0 }); },
+          style: { padding: '8px 18px', border: '2.5px solid #201B13', borderRadius: '12px', background: '#fff', fontFamily: "'Shantell Sans'", fontWeight: 600, fontSize: '14px', cursor: 'pointer', boxShadow: '3px 3px 0 #8B6DFF' } }, 'Next artwork')
+      ),
+      h('div', { style: { marginTop: '12px', display: 'flex', alignItems: 'center', gap: '12px' } },
+        h('span', { style: { fontFamily: "'Caveat'", fontSize: '15px', opacity: .5 } }, 'Reference:'),
+        h('img', { src: fpImg, style: { width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px', border: '2px solid #201B13' } })
+      )
+    );
+
     const hasPortrait = !!this.state.portraitImg;
     return {
       isHome: screen === 'home', isJourney: screen === 'journey', isSketches: screen === 'sketches', isProjects: screen === 'projects', isContact: screen === 'contact', isGames: screen === 'games',
@@ -238,14 +288,17 @@ class Component extends DCLogic {
       portraitZoom: (e) => { const v = parseFloat(e.target.value); this.setState({ pScale: v }, () => this.persistPortrait()); },
       patternBg, doodleAnim, showAnnotations,
       activeTitle: active.title, activeBody: active.body, activeIcon: active.icon, activeColor: active.color, activeN: active.n,
-      activeGame, isTTT: activeGame === 'ttt', isSudoku: activeGame === 'sudoku',
-      tttEl, sudokuEl,
+      activeGame, isTTT: activeGame === 'ttt', isSudoku: activeGame === 'sudoku', isPuzzle: activeGame === 'puzzle',
+      tttEl, sudokuEl, puzzleEl,
       tttTabBg: activeGame === 'ttt' ? '#FFC53D' : '#fff',
       tttTabColor: '#201B13',
       sudokuTabBg: activeGame === 'sudoku' ? '#8B6DFF' : '#fff',
       sudokuTabColor: activeGame === 'sudoku' ? '#fff' : '#201B13',
+      puzzleTabBg: activeGame === 'puzzle' ? '#59C29D' : '#fff',
+      puzzleTabColor: activeGame === 'puzzle' ? '#fff' : '#201B13',
       pickTTT: () => this.setState({ activeGame: 'ttt' }),
       pickSudoku: () => this.setState({ activeGame: 'sudoku' }),
+      pickPuzzle: () => this.setState({ activeGame: 'puzzle' }),
       goHome: () => this.go('home'), goJourney: () => this.go('journey'), goSketches: () => this.go('sketches'), goProjects: () => this.go('projects'), goContact: () => this.go('contact'), goGames: () => this.go('games'),
       cName: this.state.cName, cEmail: this.state.cEmail, cMsg: this.state.cMsg,
       onName: (e) => this.setState({ cName: e.target.value }),

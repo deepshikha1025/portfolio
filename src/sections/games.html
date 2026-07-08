@@ -13,6 +13,9 @@
         <button onclick="{{ pickSudoku }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ sudokuTabBg }};color:{{ sudokuTabColor }}">
           <i class="ri-grid-line"></i> Sudoku
         </button>
+        <button onclick="{{ pickPuzzle }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ puzzleTabBg }};color:{{ puzzleTabColor }}">
+          <i class="ri-layout-grid-line"></i> 15 Puzzle
+        </button>
       </div>
 
       <!-- Tic-Tac-Toe -->
@@ -30,6 +33,15 @@
         <div style="font-family:'Shantell Sans';font-weight:700;font-size:22px;margin-bottom:4px;"><i class="ri-grid-line" style="color:#8B6DFF;"></i> Sudoku</div>
         <div style="font-family:'Caveat';font-size:16px;color:#8B6DFF;margin-bottom:18px;">Tap a cell, then pick a number below.</div>
         {{ sudokuEl }}
+      </div>
+      </sc-if>
+
+      <!-- 15 Puzzle -->
+      <sc-if value="{{ isPuzzle }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:2.5px solid #201B13;border-radius:20px;box-shadow:6px 6px 0 #59C29D;padding:clamp(20px,4vw,36px);display:inline-block;">
+        <div style="font-family:'Shantell Sans';font-weight:700;font-size:22px;margin-bottom:4px;"><i class="ri-layout-grid-line" style="color:#59C29D;"></i> 15 Puzzle</div>
+        <div style="font-family:'Caveat';font-size:16px;color:#8B6DFF;margin-bottom:18px;">Slide the tiles to reassemble the artwork!</div>
+        {{ puzzleEl }}
       </div>
       </sc-if>
 
