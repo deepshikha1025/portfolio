@@ -1,6 +1,15 @@
 class Component extends DCLogic {
-  state = { screen: 'home', step: 0, cName: '', cEmail: '', cMsg: '', overrides: {}, selected: null, portraitImg: 'uploads/portrait.png', pX: 0, pY: 0, pScale: 1, activeGame: 'ttt', tttBoard: Array(9).fill(''), tttTurn: 'X', skPuzzle: 0, skBoard: null, skSel: -1, fpTiles: null, fpMoves: 0, fpImgIdx: 0 };
+  state = { screen: 'home', step: 0, cName: '', cEmail: '', cMsg: '', overrides: {}, selected: null, portraitImg: 'uploads/portrait.png', pX: 0, pY: 0, pScale: 1, activeGame: 'puzzle', tttBoard: Array(9).fill(''), tttTurn: 'X', skPuzzle: 0, skBoard: null, skSel: -1, fpTiles: null, fpMoves: 0, fpImgIdx: 0 };
   fileRef = React.createRef();
+
+  _routes = [
+    { key: 'home',     label: 'Home' },
+    { key: 'journey',  label: 'My journey' },
+    { key: 'sketches', label: 'My sketches' },
+    { key: 'projects', label: 'My projects' },
+    { key: 'contact',  label: 'Contact me' },
+    { key: 'games',    label: 'Games' },
+  ];
 
   componentDidMount() {
     try {
@@ -11,6 +20,13 @@ class Component extends DCLogic {
       const p = localStorage.getItem('dr_portrait');
       if (p) { const o = JSON.parse(p); if (o && o.img) this.setState({ portraitImg: o.img, pX: o.x || 0, pY: o.y || 0, pScale: o.scale || 1 }); }
     } catch (e) {}
+    const keys = this._routes.map(r => r.key);
+    const hash = (location.hash || '').replace('#', '');
+    if (hash && keys.includes(hash)) this.setState({ screen: hash });
+    window.addEventListener('hashchange', () => {
+      const h = (location.hash || '').replace('#', '');
+      if (h && keys.includes(h) && h !== this.state.screen) this.setState({ screen: h });
+    });
   }
 
   persistPortrait() {
@@ -49,20 +65,15 @@ class Component extends DCLogic {
 
   go(s) {
     this.setState({ screen: s });
-    if (typeof window !== 'undefined') { try { window.scrollTo(0, 0); } catch (e) {} }
+    if (typeof window !== 'undefined') { try { location.hash = s === 'home' ? '' : s; window.scrollTo(0, 0); } catch (e) {} }
   }
 
   renderVals() {
     const screen = this.state.screen;
 
-    const nav = [
-      { key: 'home', label: 'Home' },
-      { key: 'journey', label: 'My journey' },
-      { key: 'sketches', label: 'My sketches' },
-      { key: 'projects', label: 'My projects' },
-      { key: 'contact', label: 'Contact me' },
-      { key: 'games', label: 'Games' },
-    ].map((n) => ({ ...n, active: n.key === screen, onClick: () => this.go(n.key) }));
+    const nav = this._routes.map((n) => ({ ...n, active: n.key === screen, onClick: () => this.go(n.key) }));
+    const is = {}, go = {};
+    this._routes.forEach(r => { const c = r.key[0].toUpperCase() + r.key.slice(1); is['is' + c] = screen === r.key; go['go' + c] = () => this.go(r.key); });
 
     const rawSteps = window.JOURNEY_STEPS;
     const steps = rawSteps.map((s, i) => ({
@@ -276,7 +287,7 @@ class Component extends DCLogic {
 
     const hasPortrait = !!this.state.portraitImg;
     return {
-      isHome: screen === 'home', isJourney: screen === 'journey', isSketches: screen === 'sketches', isProjects: screen === 'projects', isContact: screen === 'contact', isGames: screen === 'games',
+      ...is,
       nav, steps, categories, sketchCount, moveTargets, hasSelected, clearSelect, projects, featured, socials, skills,
       hasPortrait, noPortrait: !hasPortrait, portraitImg: this.state.portraitImg,
       portraitEl: hasPortrait ? React.createElement('img', { src: this.state.portraitImg, draggable: false, alt: 'Deepshikha Ranjan', style: { position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: 'translate(' + this.state.pX + 'px, ' + this.state.pY + 'px) scale(' + this.state.pScale + ')', transformOrigin: 'center', userSelect: 'none', pointerEvents: 'none' } }) : null,
@@ -303,7 +314,7 @@ class Component extends DCLogic {
       pickTTT: () => this.setState({ activeGame: 'ttt' }),
       pickSudoku: () => this.setState({ activeGame: 'sudoku' }),
       pickPuzzle: () => this.setState({ activeGame: 'puzzle' }),
-      goHome: () => this.go('home'), goJourney: () => this.go('journey'), goSketches: () => this.go('sketches'), goProjects: () => this.go('projects'), goContact: () => this.go('contact'), goGames: () => this.go('games'),
+      ...go,
       cName: this.state.cName, cEmail: this.state.cEmail, cMsg: this.state.cMsg,
       onName: (e) => this.setState({ cName: e.target.value }),
       onEmail: (e) => this.setState({ cEmail: e.target.value }),

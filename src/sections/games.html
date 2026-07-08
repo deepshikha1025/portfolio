@@ -7,14 +7,14 @@
 
       <!-- Game selector tabs -->
       <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;">
+        <button onclick="{{ pickPuzzle }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ puzzleTabBg }};color:{{ puzzleTabColor }}">
+          <i class="ri-layout-grid-line"></i> 15 Puzzle
+        </button>
         <button onclick="{{ pickTTT }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ tttTabBg }};color:{{ tttTabColor }}">
           <i class="ri-close-line"></i> <i class="ri-circle-line"></i> Tic-Tac-Toe
         </button>
         <button onclick="{{ pickSudoku }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ sudokuTabBg }};color:{{ sudokuTabColor }}">
           <i class="ri-grid-line"></i> Sudoku
-        </button>
-        <button onclick="{{ pickPuzzle }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ puzzleTabBg }};color:{{ puzzleTabColor }}">
-          <i class="ri-layout-grid-line"></i> 15 Puzzle
         </button>
       </div>
 
