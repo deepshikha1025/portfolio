@@ -7,8 +7,8 @@ class Component extends DCLogic {
     { key: 'journey',  label: 'My journey' },
     { key: 'sketches', label: 'My sketches' },
     { key: 'projects', label: 'My projects' },
-    { key: 'contact',  label: 'Contact me' },
     { key: 'games',    label: 'Games' },
+    { key: 'contact',  label: 'Contact me' },
   ];
 
   componentDidMount() {
