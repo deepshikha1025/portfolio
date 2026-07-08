@@ -8,7 +8,7 @@
         </div>
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:2px 4px;align-items:center;">
-        <sc-for list="{{ nav }}" as="item" hint-placeholder-count="5">
+        <sc-for list="{{ nav }}" as="item" hint-placeholder-count="6">
           <div onclick="{{ item.onClick }}" style="position:relative;padding:7px 13px;cursor:pointer;font-family:'Shantell Sans';font-weight:600;font-size:clamp(15px,1.5vw,17px);border-radius:14px;transition:background .14s ease;" style-hover="background:rgba(63,167,214,0.14)">
             {{ item.label }}
             <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}">

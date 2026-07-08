@@ -1,0 +1,37 @@
+<!-- ============ GAMES ============ -->
+    <sc-if value="{{ isGames }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1120px;margin:0 auto;padding:clamp(26px,5vw,56px) clamp(18px,4vw,40px) clamp(50px,7vw,90px);animation:popin .4s ease both;">
+      <div style="font-family:'Caveat';font-size:clamp(20px,3vw,26px);color:#59C29D;transform:rotate(-1.5deg);">take a break ✦</div>
+      <h1 style="font-family:'Shantell Sans';font-weight:700;font-size:clamp(38px,7vw,72px);margin:2px 0 6px;letter-spacing:-.5px;">Games</h1>
+      <p style="font-family:'Nunito';font-weight:600;font-size:clamp(15px,1.8vw,19px);max-width:600px;opacity:.8;margin:0 0 28px;">A little fun never hurts — pick a game and play!</p>
+
+      <!-- Game selector tabs -->
+      <div style="display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;">
+        <button onclick="{{ pickTTT }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ tttTabBg }};color:{{ tttTabColor }}">
+          <i class="ri-close-line"></i> <i class="ri-circle-line"></i> Tic-Tac-Toe
+        </button>
+        <button onclick="{{ pickSudoku }}" style="padding:12px 24px;border:2.5px solid #201B13;border-radius:14px;font-family:'Shantell Sans';font-weight:700;font-size:16px;cursor:pointer;transition:all .15s;box-shadow:3px 3px 0 #201B13;background:{{ sudokuTabBg }};color:{{ sudokuTabColor }}">
+          <i class="ri-grid-line"></i> Sudoku
+        </button>
+      </div>
+
+      <!-- Tic-Tac-Toe -->
+      <sc-if value="{{ isTTT }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#fff;border:2.5px solid #201B13;border-radius:20px;box-shadow:6px 6px 0 #FFC53D;padding:clamp(20px,4vw,36px);display:inline-block;">
+        <div style="font-family:'Shantell Sans';font-weight:700;font-size:22px;margin-bottom:4px;"><i class="ri-close-line" style="color:#FF6F61;"></i> <i class="ri-circle-line" style="color:#3FA7D6;"></i> Tic-Tac-Toe</div>
+        <div style="font-family:'Caveat';font-size:16px;color:#8B6DFF;margin-bottom:18px;">Play with a friend — X goes first!</div>
+        {{ tttEl }}
+      </div>
+      </sc-if>
+
+      <!-- Sudoku -->
+      <sc-if value="{{ isSudoku }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:2.5px solid #201B13;border-radius:20px;box-shadow:6px 6px 0 #8B6DFF;padding:clamp(20px,4vw,36px);display:inline-block;">
+        <div style="font-family:'Shantell Sans';font-weight:700;font-size:22px;margin-bottom:4px;"><i class="ri-grid-line" style="color:#8B6DFF;"></i> Sudoku</div>
+        <div style="font-family:'Caveat';font-size:16px;color:#8B6DFF;margin-bottom:18px;">Tap a cell, then pick a number below.</div>
+        {{ sudokuEl }}
+      </div>
+      </sc-if>
+
+    </section>
+    </sc-if>
