@@ -246,27 +246,31 @@ class Component extends DCLogic {
     };
     const fpSize = 'clamp(60px, 18vw, 85px)';
 
-    const puzzleEl = h('div', null,
-      h('div', { style: { position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', width: 'fit-content', border: '3px solid #201B13', borderRadius: '14px', overflow: 'hidden', background: '#f2ede3' } },
-        ...fpTiles.map((v, i) => {
-          if (v === 0) return h('div', { key: 'blank', style: { width: fpSize, height: fpSize, background: fpSolved ? 'transparent' : '#f2ede3' } });
-          const origR = Math.floor((v - 1) / 4), origC = (v - 1) % 4;
-          const bgX = origC * 33.333, bgY = origR * 33.333;
-          return h('div', { key: v, onClick: () => fpSlide(i),
-            style: { width: fpSize, height: fpSize, backgroundImage: 'url(' + fpImg + ')', backgroundSize: '400% 400%', backgroundPosition: bgX + '% ' + bgY + '%', cursor: fpSolved ? 'default' : 'pointer', border: '1px solid rgba(32,27,19,.15)', transition: 'transform .1s', boxSizing: 'border-box' }
-          });
-        })
+    const puzzleEl = h('div', { style: { display: 'flex', gap: 'clamp(16px, 4vw, 28px)', alignItems: 'flex-start', flexWrap: 'wrap' } },
+      // Left: puzzle grid
+      h('div', null,
+        h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', width: 'fit-content', border: '3px solid #201B13', borderRadius: '14px', overflow: 'hidden', background: '#f2ede3' } },
+          ...fpTiles.map((v, i) => {
+            if (v === 0) return h('div', { key: 'blank', style: { width: fpSize, height: fpSize, background: fpSolved ? 'transparent' : '#f2ede3' } });
+            const origR = Math.floor((v - 1) / 4), origC = (v - 1) % 4;
+            const bgX = origC * 33.333, bgY = origR * 33.333;
+            return h('div', { key: v, onClick: () => fpSlide(i),
+              style: { width: fpSize, height: fpSize, backgroundImage: 'url(' + fpImg + ')', backgroundSize: '400% 400%', backgroundPosition: bgX + '% ' + bgY + '%', cursor: fpSolved ? 'default' : 'pointer', border: '1px solid rgba(32,27,19,.15)', transition: 'transform .1s', boxSizing: 'border-box' }
+            });
+          })
+        ),
+        h('div', { style: { marginTop: '14px', display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' } },
+          fpSolved && fpMoves > 0 ? h('span', { style: { fontFamily: "'Shantell Sans'", fontWeight: 700, fontSize: '18px', color: '#59C29D' } }, 'Solved in ' + fpMoves + ' moves!') : h('span', { style: { fontFamily: "'Caveat'", fontSize: '16px', opacity: .6 } }, fpMoves + ' moves'),
+          h('button', { onClick: () => this.setState({ fpTiles: fpShuffle(), fpMoves: 0 }),
+            style: { padding: '8px 18px', border: '2.5px solid #201B13', borderRadius: '12px', background: '#fff', fontFamily: "'Shantell Sans'", fontWeight: 600, fontSize: '14px', cursor: 'pointer', boxShadow: '3px 3px 0 #59C29D' } }, 'Shuffle'),
+          h('button', { onClick: () => { const ni = (fpImgIdx + 1) % FP_IMGS.length; this.setState({ fpImgIdx: ni, fpTiles: fpShuffle(), fpMoves: 0 }); },
+            style: { padding: '8px 18px', border: '2.5px solid #201B13', borderRadius: '12px', background: '#fff', fontFamily: "'Shantell Sans'", fontWeight: 600, fontSize: '14px', cursor: 'pointer', boxShadow: '3px 3px 0 #8B6DFF' } }, 'Next artwork')
+        )
       ),
-      h('div', { style: { marginTop: '14px', display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' } },
-        fpSolved && fpMoves > 0 ? h('span', { style: { fontFamily: "'Shantell Sans'", fontWeight: 700, fontSize: '18px', color: '#59C29D' } }, 'Solved in ' + fpMoves + ' moves!') : h('span', { style: { fontFamily: "'Caveat'", fontSize: '16px', opacity: .6 } }, fpMoves + ' moves'),
-        h('button', { onClick: () => this.setState({ fpTiles: fpShuffle(), fpMoves: 0 }),
-          style: { padding: '8px 18px', border: '2.5px solid #201B13', borderRadius: '12px', background: '#fff', fontFamily: "'Shantell Sans'", fontWeight: 600, fontSize: '14px', cursor: 'pointer', boxShadow: '3px 3px 0 #59C29D' } }, 'Shuffle'),
-        h('button', { onClick: () => { const ni = (fpImgIdx + 1) % FP_IMGS.length; this.setState({ fpImgIdx: ni, fpTiles: fpShuffle(), fpMoves: 0 }); },
-          style: { padding: '8px 18px', border: '2.5px solid #201B13', borderRadius: '12px', background: '#fff', fontFamily: "'Shantell Sans'", fontWeight: 600, fontSize: '14px', cursor: 'pointer', boxShadow: '3px 3px 0 #8B6DFF' } }, 'Next artwork')
-      ),
-      h('div', { style: { marginTop: '12px', display: 'flex', alignItems: 'center', gap: '12px' } },
-        h('span', { style: { fontFamily: "'Caveat'", fontSize: '15px', opacity: .5 } }, 'Reference:'),
-        h('img', { src: fpImg, style: { width: '60px', height: '60px', objectFit: 'cover', borderRadius: '8px', border: '2px solid #201B13' } })
+      // Right: reference image
+      h('div', { style: { flex: 'none' } },
+        h('div', { style: { fontFamily: "'Caveat'", fontSize: '18px', color: '#8B6DFF', marginBottom: '8px', transform: 'rotate(2deg)' } }, 'Reference ↓'),
+        h('img', { src: fpImg, style: { width: 'clamp(160px, 40vw, 260px)', height: 'clamp(160px, 40vw, 260px)', objectFit: 'cover', borderRadius: '14px', border: '2.5px solid #201B13', boxShadow: '4px 4px 0 #201B13', display: 'block' } })
       )
     );
 
