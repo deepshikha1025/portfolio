@@ -192,6 +192,7 @@ body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; backg
 .color-row { display:flex; gap:8px; margin-top:6px; flex-wrap:wrap; }
 .color-swatch { width:32px; height:32px; border-radius:50%; border:3px solid transparent; cursor:pointer; transition:border-color .15s; }
 .color-swatch:hover, .color-swatch.active { border-color:#201B13; }
+.preset-btn.active { background:#f0ece4 !important; box-shadow:inset 0 0 0 2px #8B6DFF; }
 </style>
 </head>
 <body>
@@ -356,7 +357,8 @@ function journeyModal(idx){
     <h2>${isNew?'Add':'Edit'} Step</h2>
     <label>Title</label><input type="text" id="m_title" value="${esc(s.title)}">
     <label>Story</label><textarea id="m_body" style="min-height:100px">${esc(s.body)}</textarea>
-    <label>Icon (e.g. ri-bank-line) — <a href="https://remixicon.com" target="_blank">browse icons</a></label><input type="text" id="m_icon" value="${esc(s.icon)}">
+    <label>Icon (e.g. ri-bank-line) — <a href="https://remixicon.com" target="_blank" style="color:#8B6DFF">browse icons ↗</a></label>
+    <div style="display:flex;gap:10px;align-items:center"><input type="text" id="m_icon" value="${esc(s.icon)}" oninput="document.getElementById('m_icon_preview').className=this.value" style="flex:1"><div style="width:40px;height:40px;border-radius:50%;border:2px solid #201B13;display:flex;align-items:center;justify-content:center;font-size:20px;background:${s.color};color:#fff"><i id="m_icon_preview" class="${esc(s.icon)}"></i></div></div>
     <label>Color</label><div id="m_color_row">${colorPicker('m_color','m_bg',s.color)}</div><input type="hidden" id="m_color" value="${s.color}"><input type="hidden" id="m_bg" value="${s.bg}">
     <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="journeySave(${idx})">Save</button></div>
   </div></div>`;
@@ -389,7 +391,8 @@ function skillModal(idx){
     <h2>${isNew?'Add':'Edit'} Skill</h2>
     <label>Label</label><input type="text" id="m_label" value="${esc(s.label)}">
     <label>Description</label><input type="text" id="m_sub" value="${esc(s.sub)}">
-    <label>Icon — <a href="https://remixicon.com" target="_blank">browse icons</a></label><input type="text" id="m_icon" value="${esc(s.icon)}">
+    <label>Icon — <a href="https://remixicon.com" target="_blank" style="color:#8B6DFF">browse icons ↗</a></label>
+    <div style="display:flex;gap:10px;align-items:center"><input type="text" id="m_icon" value="${esc(s.icon)}" oninput="document.getElementById('m_icon_preview').className=this.value" style="flex:1"><div style="width:40px;height:40px;border-radius:50%;border:2px solid #201B13;display:flex;align-items:center;justify-content:center;font-size:20px;background:${s.color};color:#fff"><i id="m_icon_preview" class="${esc(s.icon)}"></i></div></div>
     <label>Color</label><div id="m_color_row">${colorPicker('m_color','m_bg',s.color)}</div><input type="hidden" id="m_color" value="${s.color}"><input type="hidden" id="m_bg" value="">
     <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="skillSave(${idx})">Save</button></div>
   </div></div>`;
@@ -405,6 +408,50 @@ function skillSave(idx){
 // ══════════════════════════════════════
 //  SOCIALS
 // ══════════════════════════════════════
+const SOCIAL_PRESETS = [
+  {cat:'Social Media',items:[
+    {label:'LinkedIn',icon:'ri-linkedin-box-fill',color:'#3FA7D6'},
+    {label:'Instagram',icon:'ri-instagram-line',color:'#FF6F61'},
+    {label:'Twitter / X',icon:'ri-twitter-x-fill',color:'#201B13'},
+    {label:'Facebook',icon:'ri-facebook-circle-fill',color:'#3FA7D6'},
+    {label:'YouTube',icon:'ri-youtube-fill',color:'#FF6F61'},
+    {label:'TikTok',icon:'ri-tiktok-fill',color:'#201B13'},
+    {label:'Snapchat',icon:'ri-snapchat-fill',color:'#E0A400'},
+    {label:'Pinterest',icon:'ri-pinterest-fill',color:'#FF6F61'},
+    {label:'Reddit',icon:'ri-reddit-fill',color:'#FF6F61'},
+    {label:'Threads',icon:'ri-threads-fill',color:'#201B13'},
+    {label:'WhatsApp',icon:'ri-whatsapp-line',color:'#59C29D'},
+    {label:'Telegram',icon:'ri-telegram-fill',color:'#3FA7D6'},
+    {label:'Discord',icon:'ri-discord-fill',color:'#8B6DFF'},
+    {label:'Mastodon',icon:'ri-mastodon-fill',color:'#8B6DFF'},
+  ]},
+  {cat:'Portfolio & Creative',items:[
+    {label:'Behance',icon:'ri-behance-fill',color:'#8B6DFF'},
+    {label:'Dribbble',icon:'ri-dribbble-line',color:'#FF6F61'},
+    {label:'ArtStation',icon:'ri-palette-fill',color:'#3FA7D6'},
+    {label:'DeviantArt',icon:'ri-brush-fill',color:'#59C29D'},
+    {label:'Medium',icon:'ri-medium-fill',color:'#201B13'},
+    {label:'Notion',icon:'ri-notion-fill',color:'#201B13'},
+    {label:'GitHub',icon:'ri-github-fill',color:'#201B13'},
+  ]},
+  {cat:'Freelancing',items:[
+    {label:'Upwork',icon:'ri-briefcase-fill',color:'#59C29D'},
+    {label:'Fiverr',icon:'ri-store-2-fill',color:'#59C29D'},
+    {label:'Freelancer',icon:'ri-user-star-fill',color:'#3FA7D6'},
+    {label:'Toptal',icon:'ri-trophy-fill',color:'#8B6DFF'},
+    {label:'99designs',icon:'ri-palette-fill',color:'#FF6F61'},
+    {label:'Contra',icon:'ri-compass-3-fill',color:'#8B6DFF'},
+    {label:'PeoplePerHour',icon:'ri-time-fill',color:'#E0A400'},
+    {label:'Guru',icon:'ri-user-voice-fill',color:'#3FA7D6'},
+  ]},
+  {cat:'Other',items:[
+    {label:'Website',icon:'ri-global-line',color:'#3FA7D6'},
+    {label:'Email',icon:'ri-mail-fill',color:'#FF6F61'},
+    {label:'Spotify',icon:'ri-spotify-fill',color:'#59C29D'},
+    {label:'Twitch',icon:'ri-twitch-fill',color:'#8B6DFF'},
+    {label:'Slack',icon:'ri-slack-fill',color:'#E0A400'},
+  ]},
+];
 function renderSocials(){
   document.getElementById('socials-section').innerHTML=`
     <p style="font-size:14px;opacity:.6;margin-bottom:16px">Social media links in the contact section.</p>
@@ -417,13 +464,27 @@ function renderSocials(){
       <div class="add-card" onclick="socialModal(-1)">+ Add social link</div>
     </div>`;
 }
+function socialPickPreset(p){
+  document.getElementById('m_label').value=p.label;
+  document.getElementById('m_icon').value=p.icon;
+  document.getElementById('m_icon_preview').className=p.icon;
+  document.getElementById('m_color').value=p.color;
+  document.getElementById('m_icon_preview').parentElement.style.background=p.color;
+  document.querySelectorAll('#m_color_row .color-swatch').forEach(s=>{s.classList.toggle('active',s.style.backgroundColor===p.color);});
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
 function socialModal(idx){
   const isNew=idx<0, s=isNew?{label:'',icon:'ri-links-line',color:'#3FA7D6',href:''}:{...D.socials[idx]};
+  const presetHtml=SOCIAL_PRESETS.map(g=>`<div style="margin-bottom:10px"><div style="font-size:12px;font-weight:700;opacity:.5;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">${g.cat}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${g.items.map(p=>`<button type="button" class="preset-btn ${s.label===p.label?'active':''}" onclick='socialPickPreset(${JSON.stringify(p).replace(/'/g,"&#39;")})' style="display:flex;align-items:center;gap:6px;padding:6px 12px;border:2px solid #201B13;border-radius:10px;background:${s.label===p.label?'#f0ece4':'#fff'};cursor:pointer;font-size:13px;font-weight:600;transition:all .12s" onmouseover="this.style.background='#f0ece4'" onmouseout="if(!this.classList.contains('active'))this.style.background='#fff'"><i class="${p.icon}" style="font-size:16px;color:${p.color}"></i>${p.label}</button>`).join('')}</div></div>`).join('');
   document.getElementById('modalRoot').innerHTML=`<div class="modal-overlay" onclick="if(event.target===this)closeModal()"><div class="modal">
     <h2>${isNew?'Add':'Edit'} Social Link</h2>
-    <label>Label (e.g. LinkedIn)</label><input type="text" id="m_label" value="${esc(s.label)}">
-    <label>URL</label><input type="text" id="m_href" value="${esc(s.href)}">
-    <label>Icon — <a href="https://remixicon.com" target="_blank">browse icons</a></label><input type="text" id="m_icon" value="${esc(s.icon)}">
+    <label>Choose a platform</label>
+    <div style="max-height:200px;overflow-y:auto;border:2px solid #e8e0d0;border-radius:10px;padding:12px;margin-bottom:4px">${presetHtml}</div>
+    <label>Label</label><input type="text" id="m_label" value="${esc(s.label)}">
+    <label>URL</label><input type="text" id="m_href" value="${esc(s.href)}" placeholder="https://...">
+    <label>Icon</label>
+    <div style="display:flex;gap:10px;align-items:center"><input type="text" id="m_icon" value="${esc(s.icon)}" oninput="document.getElementById('m_icon_preview').className=this.value" style="flex:1"><div style="width:40px;height:40px;border-radius:50%;border:2px solid #201B13;display:flex;align-items:center;justify-content:center;font-size:20px;background:${s.color};color:#fff"><i id="m_icon_preview" class="${esc(s.icon)}"></i></div></div>
     <label>Color</label><div id="m_color_row">${colorPicker('m_color','m_bg',s.color)}</div><input type="hidden" id="m_color" value="${s.color}"><input type="hidden" id="m_bg" value="">
     <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal()">Cancel</button><button class="btn btn-primary" onclick="socialSave(${idx})">Save</button></div>
   </div></div>`;

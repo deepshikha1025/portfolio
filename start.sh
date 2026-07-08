@@ -13,8 +13,9 @@ python3 build.py
 
 # Start dashboard
 echo ""
+DIR="$(pwd)"
 echo "Dashboard:  http://localhost:4444"
-echo "Portfolio:  open index.html in browser"
-echo "Admin:      open admin.html in browser (or yoursite.vercel.app/admin.html)"
+echo "Portfolio:  file://$DIR/index.html"
+echo "Admin:      file://$DIR/admin.html"
 echo ""
 python3 dashboard.py
