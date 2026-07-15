@@ -35,4 +35,14 @@ var PROJECT_DEFINITIONS = [
     href: "https://www.behance.net/gallery/246485079/AI-Enhanced-Customer-Support-Platform",
     img: "uploads/AI Enhanced Customer Support Platform.jpeg",
   },
+  {
+    title: "Aura-A Personalized Health Coach App Design",
+    desc: "A health coach app that rebuilds your day around one question \u2014 \"How's your energy?\" Full UX case study + a working coded prototype.",
+    tags: "UI . Mobile . HealthCare",
+    color: "#59C29D",
+    bg: "#E0FAEC",
+    rot: -2,
+    href: "https://www.behance.net/gallery/252761145/Aura-APersonalized-Health-Coach-App-Design",
+    img: "uploads/aura-behance-cover-808x632.png",
+  },
 ];
