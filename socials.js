@@ -15,12 +15,18 @@ var SOCIAL_LINKS = [
     label: "Instagram",
     icon: "ri-instagram-line",
     color: "#FF6F61",
-    href: "https://www.instagram.com/",
+    href: "https://www.instagram.com/theuiuxnotebook",
   },
   {
     label: "Behance",
     icon: "ri-behance-fill",
     color: "#8B6DFF",
     href: "https://www.behance.net/deepshiranjan4",
+  },
+  {
+    label: "Dribbble",
+    icon: "ri-dribbble-fill",
+    color: "#EA4C89",
+    href: "https://dribbble.com/deepshikha-ranjan",
   },
 ];
